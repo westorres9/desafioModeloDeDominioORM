@@ -1,11 +1,24 @@
 package com.desuperior.desafioModeloDominioORM.entities;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class Categoria {
+@Entity
+@Table(name = "tb_categoria")
+public class Categoria implements Serializable {
+    private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descricao;
+
+    @OneToMany(mappedBy = "categoria")
+    private Set<Atividade> atividades = new HashSet<>();
 
     public Categoria(){
     }
@@ -29,6 +42,10 @@ public class Categoria {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Set<Atividade> getAtividades() {
+        return atividades;
     }
 
     @Override

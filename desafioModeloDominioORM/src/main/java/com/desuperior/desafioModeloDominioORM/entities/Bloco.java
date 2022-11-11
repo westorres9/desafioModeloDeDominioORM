@@ -1,21 +1,37 @@
 package com.desuperior.desafioModeloDominioORM.entities;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
-public class Bloco {
+@Entity
+@Table(name = "tb_bloco")
+public class Bloco implements Serializable {
+    private static final long serialVersionUID =1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant inicio;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant fim;
 
-    public Bloco () {
+    @ManyToOne
+    @JoinColumn(name = "atividade_id")
+    private Atividade atividade;
+
+    public Bloco() {
     }
 
-    public Bloco(Integer id, Instant inicio, Instant fim) {
+    public Bloco(Integer id, Instant inicio, Instant fim, Atividade atividade) {
         this.id = id;
         this.inicio = inicio;
         this.fim = fim;
+        this.atividade = atividade;
     }
 
     public Integer getId() {
@@ -42,16 +58,11 @@ public class Bloco {
         this.fim = fim;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bloco bloco = (Bloco) o;
-        return Objects.equals(id, bloco.id);
+    public Atividade getAtividade() {
+        return atividade;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
     }
 }
